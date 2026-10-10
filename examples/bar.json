@@ -1,0 +1,63 @@
+{
+  "title": "Sats zapped per weekday",
+  "data": {
+    "values": [
+      {
+        "day": "Mon",
+        "sats": 21000
+      },
+      {
+        "day": "Tue",
+        "sats": 33450
+      },
+      {
+        "day": "Wed",
+        "sats": 18200
+      },
+      {
+        "day": "Thu",
+        "sats": 40100
+      },
+      {
+        "day": "Fri",
+        "sats": 52800
+      },
+      {
+        "day": "Sat",
+        "sats": 61500
+      },
+      {
+        "day": "Sun",
+        "sats": 47300
+      }
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "day",
+      "type": "ordinal",
+      "title": "Day (UTC)",
+      "sort": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "axis": {
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "sats",
+      "type": "quantitative",
+      "title": "Sats",
+      "axis": {
+        "format": "~s"
+      }
+    }
+  }
+}

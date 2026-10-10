@@ -1,0 +1,153 @@
+{
+  "title": {
+    "text": "Relay round-trip time",
+    "subtitle": "Median of 3-hourly probes, 9 Oct 2026 (UTC)"
+  },
+  "data": {
+    "values": [
+      {
+        "t": "2026-10-09T00:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 142
+      },
+      {
+        "t": "2026-10-09T03:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 138
+      },
+      {
+        "t": "2026-10-09T06:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 151
+      },
+      {
+        "t": "2026-10-09T09:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 189
+      },
+      {
+        "t": "2026-10-09T12:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 236
+      },
+      {
+        "t": "2026-10-09T15:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 214
+      },
+      {
+        "t": "2026-10-09T18:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 171
+      },
+      {
+        "t": "2026-10-09T21:00:00Z",
+        "relay": "relay-a.example",
+        "ms": 149
+      },
+      {
+        "t": "2026-10-09T00:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 98
+      },
+      {
+        "t": "2026-10-09T03:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 104
+      },
+      {
+        "t": "2026-10-09T06:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 97
+      },
+      {
+        "t": "2026-10-09T09:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 121
+      },
+      {
+        "t": "2026-10-09T12:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 165
+      },
+      {
+        "t": "2026-10-09T15:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 158
+      },
+      {
+        "t": "2026-10-09T18:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 126
+      },
+      {
+        "t": "2026-10-09T21:00:00Z",
+        "relay": "relay-b.example",
+        "ms": 109
+      }
+    ]
+  },
+  "encoding": {
+    "x": {
+      "field": "t",
+      "type": "temporal",
+      "title": "Time (UTC)",
+      "scale": {
+        "type": "utc"
+      },
+      "axis": {
+        "format": "%H:%M"
+      }
+    },
+    "y": {
+      "field": "ms",
+      "type": "quantitative",
+      "title": "Round-trip (ms)"
+    },
+    "color": {
+      "field": "relay",
+      "type": "nominal",
+      "title": "Relay"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "interpolate": "monotone"
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 70,
+        "tooltip": true
+      },
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "on": "pointerover",
+            "clear": "pointerout",
+            "nearest": true,
+            "fields": [
+              "t"
+            ]
+          }
+        }
+      ],
+      "encoding": {
+        "opacity": {
+          "condition": {
+            "param": "hover",
+            "value": 1,
+            "empty": false
+          },
+          "value": 0
+        }
+      }
+    }
+  ]
+}

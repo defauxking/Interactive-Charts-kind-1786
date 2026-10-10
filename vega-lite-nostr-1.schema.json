@@ -1,0 +1,1770 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:nostr:nip-xx:dialect:vega-lite-nostr:1",
+  "title": "vega-lite-nostr, version 1",
+  "description": "Non-normative JSON Schema for the content of kind 1786 events whose dialect tag is [\"dialect\", \"vega-lite-nostr\", \"1\"]. Every object is closed (additionalProperties: false). NIP-XX is authoritative; its additional constraints (I-JSON parsing, size, temporal values, parameter references, channel sorts, offsets) are not expressible here and MUST be checked separately.",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/UnitSpec"
+    },
+    {
+      "$ref": "#/definitions/LayerSpec"
+    }
+  ],
+  "definitions": {
+    "UnitSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data",
+        "mark",
+        "encoding"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "mark": {
+          "$ref": "#/definitions/Mark"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding"
+        },
+        "params": {
+          "$ref": "#/definitions/Params"
+        },
+        "title": {
+          "$ref": "#/definitions/Title"
+        },
+        "width": {
+          "$ref": "#/definitions/SizeHint"
+        },
+        "height": {
+          "$ref": "#/definitions/SizeHint"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/NearestOnlyOnPoint"
+        }
+      ]
+    },
+    "LayerSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data",
+        "layer"
+      ],
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding"
+        },
+        "layer": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/definitions/LayerItem"
+          }
+        },
+        "title": {
+          "$ref": "#/definitions/Title"
+        },
+        "width": {
+          "$ref": "#/definitions/SizeHint"
+        },
+        "height": {
+          "$ref": "#/definitions/SizeHint"
+        }
+      }
+    },
+    "LayerItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mark"
+      ],
+      "properties": {
+        "mark": {
+          "$ref": "#/definitions/Mark"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding"
+        },
+        "params": {
+          "$ref": "#/definitions/Params"
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/NearestOnlyOnPoint"
+        }
+      ]
+    },
+    "Data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5000,
+          "items": {
+            "$ref": "#/definitions/Row"
+          }
+        }
+      }
+    },
+    "Row": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 32,
+      "propertyNames": {
+        "$ref": "#/definitions/FieldName"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/Scalar"
+      }
+    },
+    "Scalar": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ],
+      "maxLength": 256
+    },
+    "FieldName": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9]{0,63}$",
+      "not": {
+        "enum": [
+          "constructor",
+          "prototype",
+          "toString",
+          "toLocaleString",
+          "valueOf",
+          "hasOwnProperty",
+          "isPrototypeOf",
+          "propertyIsEnumerable"
+        ]
+      }
+    },
+    "ParamName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]{0,31}$",
+      "not": {
+        "enum": [
+          "width",
+          "height",
+          "padding",
+          "autosize",
+          "background",
+          "cursor",
+          "unit",
+          "datum",
+          "event",
+          "item",
+          "parent",
+          "group",
+          "constructor",
+          "prototype",
+          "await",
+          "break",
+          "case",
+          "catch",
+          "class",
+          "const",
+          "continue",
+          "debugger",
+          "default",
+          "delete",
+          "do",
+          "else",
+          "enum",
+          "export",
+          "extends",
+          "false",
+          "finally",
+          "for",
+          "function",
+          "if",
+          "import",
+          "in",
+          "instanceof",
+          "new",
+          "null",
+          "return",
+          "super",
+          "switch",
+          "this",
+          "throw",
+          "true",
+          "try",
+          "typeof",
+          "var",
+          "void",
+          "while",
+          "with",
+          "yield",
+          "implements",
+          "interface",
+          "let",
+          "package",
+          "private",
+          "protected",
+          "public",
+          "static",
+          "arguments",
+          "eval",
+          "undefined"
+        ]
+      }
+    },
+    "Text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\"'\\\\\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]+$"
+    },
+    "HexColor": {
+      "type": "string",
+      "pattern": "^#(?:[0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$"
+    },
+    "NumberFormat": {
+      "type": "string",
+      "maxLength": 16,
+      "pattern": "^(?:[^\"'\\\\\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029%]?[<>=^])?[-+( ]?[$#]?0?(?:[1-9][0-9]?)?,?(?:\\.[0-9]{1,2})?~?[bcdefgnoprsxX%]?$"
+    },
+    "TimeFormat": {
+      "type": "string",
+      "maxLength": 32,
+      "pattern": "^(?:[^%\"'\\\\\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]|%[-_0]?[aAbBcdefgGHIjLmMpqQsSuUVwWxXyYZ%])*$"
+    },
+    "Title": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/Text"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "text"
+          ],
+          "properties": {
+            "text": {
+              "$ref": "#/definitions/Text"
+            },
+            "subtitle": {
+              "$ref": "#/definitions/Text"
+            }
+          }
+        }
+      ]
+    },
+    "SizeHint": {
+      "type": "integer",
+      "minimum": 50,
+      "maximum": 2000
+    },
+    "MarkType": {
+      "enum": [
+        "bar",
+        "line",
+        "area",
+        "point",
+        "rule",
+        "rect",
+        "arc"
+      ]
+    },
+    "Mark": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/MarkType"
+        },
+        {
+          "$ref": "#/definitions/MarkDef"
+        }
+      ]
+    },
+    "MarkDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/MarkType"
+        },
+        "tooltip": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "const": "encoding"
+                }
+              }
+            }
+          ]
+        },
+        "point": {
+          "type": "boolean"
+        },
+        "interpolate": {
+          "enum": [
+            "linear",
+            "monotone",
+            "step",
+            "step-before",
+            "step-after"
+          ]
+        },
+        "color": {
+          "$ref": "#/definitions/HexColor"
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "filled": {
+          "type": "boolean"
+        },
+        "size": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2500
+        },
+        "strokeWidth": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "strokeDash": {
+          "$ref": "#/definitions/DashArray"
+        },
+        "shape": {
+          "$ref": "#/definitions/ShapeName"
+        },
+        "innerRadius": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "cornerRadius": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "ShapeName": {
+      "enum": [
+        "circle",
+        "square",
+        "cross",
+        "diamond",
+        "triangle-up",
+        "triangle-down",
+        "triangle-right",
+        "triangle-left"
+      ]
+    },
+    "DashArray": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 4,
+      "items": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 50
+      }
+    },
+    "Encoding": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "x": {
+          "$ref": "#/definitions/PositionDef"
+        },
+        "y": {
+          "$ref": "#/definitions/PositionDef"
+        },
+        "x2": {
+          "$ref": "#/definitions/SecondaryDef"
+        },
+        "y2": {
+          "$ref": "#/definitions/SecondaryDef"
+        },
+        "xOffset": {
+          "$ref": "#/definitions/OffsetDef"
+        },
+        "yOffset": {
+          "$ref": "#/definitions/OffsetDef"
+        },
+        "theta": {
+          "$ref": "#/definitions/ThetaDef"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorChannel"
+        },
+        "opacity": {
+          "$ref": "#/definitions/OpacityChannel"
+        },
+        "size": {
+          "$ref": "#/definitions/SizeChannel"
+        },
+        "strokeWidth": {
+          "$ref": "#/definitions/StrokeWidthChannel"
+        },
+        "shape": {
+          "$ref": "#/definitions/ShapeChannel"
+        },
+        "strokeDash": {
+          "$ref": "#/definitions/StrokeDashChannel"
+        },
+        "tooltip": {
+          "$ref": "#/definitions/TooltipChannel"
+        }
+      }
+    },
+    "MeasureType": {
+      "enum": [
+        "quantitative",
+        "temporal",
+        "ordinal",
+        "nominal"
+      ]
+    },
+    "DiscreteType": {
+      "enum": [
+        "ordinal",
+        "nominal"
+      ]
+    },
+    "Domain": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": [
+          "string",
+          "number"
+        ],
+        "maxLength": 256
+      }
+    },
+    "PositionDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "type"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "type": {
+          "$ref": "#/definitions/MeasureType"
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "axis": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Axis"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scale": {
+          "$ref": "#/definitions/PositionScale"
+        },
+        "sort": {
+          "$ref": "#/definitions/SortPosition"
+        },
+        "stack": {
+          "enum": [
+            "zero",
+            "normalize",
+            null
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "temporal"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "scale"
+            ],
+            "properties": {
+              "scale": {
+                "required": [
+                  "type"
+                ],
+                "propertyNames": {
+                  "enum": [
+                    "type",
+                    "nice",
+                    "reverse"
+                  ]
+                },
+                "properties": {
+                  "type": {
+                    "const": "utc"
+                  }
+                }
+              },
+              "axis": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "format": {
+                        "$ref": "#/definitions/TimeFormat"
+                      }
+                    }
+                  }
+                ]
+              },
+              "stack": false
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "quantitative"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "scale": {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "linear",
+                      "log",
+                      "sqrt",
+                      "symlog"
+                    ]
+                  },
+                  "domain": {
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "axis": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "format": {
+                        "$ref": "#/definitions/NumberFormat"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "ordinal",
+                  "nominal"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "scale": {
+                "propertyNames": {
+                  "enum": [
+                    "type",
+                    "domain",
+                    "reverse"
+                  ]
+                },
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "band",
+                      "point"
+                    ]
+                  }
+                }
+              },
+              "axis": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "not": {
+                      "required": [
+                        "format"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "stack": false
+            }
+          }
+        }
+      ]
+    },
+    "Axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "format": {
+          "type": "string"
+        },
+        "labelAngle": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "grid": {
+          "type": "boolean"
+        },
+        "labels": {
+          "type": "boolean"
+        },
+        "ticks": {
+          "type": "boolean"
+        },
+        "tickCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "orient": {
+          "enum": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ]
+        }
+      }
+    },
+    "PositionScale": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "linear",
+            "log",
+            "sqrt",
+            "symlog",
+            "utc",
+            "band",
+            "point"
+          ]
+        },
+        "domain": {
+          "$ref": "#/definitions/Domain"
+        },
+        "zero": {
+          "type": "boolean"
+        },
+        "nice": {
+          "type": "boolean"
+        },
+        "reverse": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SecondaryDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "OffsetDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "type"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "type": {
+          "$ref": "#/definitions/DiscreteType"
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sort": {
+          "$ref": "#/definitions/SortBasic"
+        }
+      }
+    },
+    "ThetaDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "type"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "type": {
+          "const": "quantitative"
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stack": {
+          "enum": [
+            true,
+            "normalize"
+          ]
+        }
+      }
+    },
+    "Legend": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "orient": {
+          "enum": [
+            "left",
+            "right",
+            "top",
+            "bottom"
+          ]
+        }
+      }
+    },
+    "ColorScale": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "linear",
+            "log",
+            "sqrt",
+            "symlog",
+            "ordinal"
+          ]
+        },
+        "domain": {
+          "$ref": "#/definitions/Domain"
+        },
+        "range": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/definitions/HexColor"
+          }
+        },
+        "zero": {
+          "type": "boolean"
+        },
+        "reverse": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ColorFieldDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "type"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "type": {
+          "enum": [
+            "quantitative",
+            "ordinal",
+            "nominal"
+          ]
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "legend": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scale": {
+          "$ref": "#/definitions/ColorScale"
+        },
+        "sort": {
+          "$ref": "#/definitions/SortBasic"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "quantitative"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "scale": {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "linear",
+                      "log",
+                      "sqrt",
+                      "symlog"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "scale": {
+                "properties": {
+                  "type": {
+                    "const": "ordinal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ColorFieldCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "param",
+        "field",
+        "type"
+      ],
+      "properties": {
+        "param": {
+          "$ref": "#/definitions/ParamName"
+        },
+        "empty": {
+          "type": "boolean"
+        },
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "type": {
+          "enum": [
+            "quantitative",
+            "ordinal",
+            "nominal"
+          ]
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "legend": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Legend"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scale": {
+          "$ref": "#/definitions/ColorScale"
+        },
+        "sort": {
+          "$ref": "#/definitions/SortBasic"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "quantitative"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "scale": {
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "linear",
+                      "log",
+                      "sqrt",
+                      "symlog"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "scale": {
+                "properties": {
+                  "type": {
+                    "const": "ordinal"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ColorChannel": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/ColorFieldDef"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "$ref": "#/definitions/HexColor"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "value"
+          ],
+          "properties": {
+            "condition": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "param",
+                    "value"
+                  ],
+                  "properties": {
+                    "param": {
+                      "$ref": "#/definitions/ParamName"
+                    },
+                    "empty": {
+                      "type": "boolean"
+                    },
+                    "value": {
+                      "$ref": "#/definitions/HexColor"
+                    }
+                  }
+                },
+                {
+                  "$ref": "#/definitions/ColorFieldCondition"
+                }
+              ]
+            },
+            "value": {
+              "$ref": "#/definitions/HexColor"
+            }
+          }
+        }
+      ]
+    },
+    "OpacityChannel": {
+      "$ref": "#/definitions/NumericValueChannel01"
+    },
+    "NumericValueChannel01": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "value"
+          ],
+          "properties": {
+            "condition": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "param",
+                "value"
+              ],
+              "properties": {
+                "param": {
+                  "$ref": "#/definitions/ParamName"
+                },
+                "empty": {
+                  "type": "boolean"
+                },
+                "value": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      ]
+    },
+    "SizeChannel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "field",
+            "type"
+          ],
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/FieldName"
+            },
+            "type": {
+              "const": "quantitative"
+            },
+            "title": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/Text"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "legend": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2500
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "value"
+          ],
+          "properties": {
+            "condition": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "param",
+                "value"
+              ],
+              "properties": {
+                "param": {
+                  "$ref": "#/definitions/ParamName"
+                },
+                "empty": {
+                  "type": "boolean"
+                },
+                "value": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 2500
+                }
+              }
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2500
+            }
+          }
+        }
+      ]
+    },
+    "StrokeWidthChannel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 20
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "value"
+          ],
+          "properties": {
+            "condition": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "param",
+                "value"
+              ],
+              "properties": {
+                "param": {
+                  "$ref": "#/definitions/ParamName"
+                },
+                "empty": {
+                  "type": "boolean"
+                },
+                "value": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 20
+                }
+              }
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 20
+            }
+          }
+        }
+      ]
+    },
+    "ShapeChannel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "field",
+            "type"
+          ],
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/FieldName"
+            },
+            "type": {
+              "$ref": "#/definitions/DiscreteType"
+            },
+            "title": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/Text"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "legend": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sort": {
+              "$ref": "#/definitions/SortBasic"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "$ref": "#/definitions/ShapeName"
+            }
+          }
+        }
+      ]
+    },
+    "StrokeDashChannel": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "field",
+            "type"
+          ],
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/FieldName"
+            },
+            "type": {
+              "$ref": "#/definitions/DiscreteType"
+            },
+            "title": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/Text"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "legend": {
+              "oneOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sort": {
+              "$ref": "#/definitions/SortBasic"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "$ref": "#/definitions/DashArray"
+            }
+          }
+        }
+      ]
+    },
+    "TooltipFieldDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field",
+        "type"
+      ],
+      "properties": {
+        "field": {
+          "$ref": "#/definitions/FieldName"
+        },
+        "type": {
+          "enum": [
+            "quantitative",
+            "ordinal",
+            "nominal"
+          ]
+        },
+        "title": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "format": {
+          "$ref": "#/definitions/NumberFormat"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "ordinal",
+                  "nominal"
+                ]
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "format"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "TooltipChannel": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/TooltipFieldDef"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/definitions/TooltipFieldDef"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "Params": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "items": {
+        "if": {
+          "type": "object",
+          "required": [
+            "select"
+          ],
+          "properties": {
+            "select": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "const": "interval"
+                }
+              }
+            }
+          }
+        },
+        "then": {
+          "$ref": "#/definitions/IntervalParam"
+        },
+        "else": {
+          "$ref": "#/definitions/PointParam"
+        }
+      }
+    },
+    "PointParam": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "select"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/ParamName"
+        },
+        "select": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "point"
+            },
+            "on": {
+              "enum": [
+                "click",
+                "pointerover"
+              ]
+            },
+            "clear": {
+              "enum": [
+                "dblclick",
+                "pointerout",
+                false
+              ]
+            },
+            "fields": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/definitions/FieldName"
+              }
+            },
+            "encodings": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 4,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "x",
+                  "y",
+                  "color",
+                  "shape",
+                  "strokeDash"
+                ]
+              }
+            },
+            "nearest": {
+              "type": "boolean"
+            },
+            "toggle": {
+              "type": "boolean"
+            }
+          }
+        },
+        "bind": {
+          "const": "legend"
+        }
+      },
+      "if": {
+        "required": [
+          "bind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "select": {
+            "not": {
+              "required": [
+                "clear"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "IntervalParam": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "select"
+      ],
+      "properties": {
+        "name": {
+          "$ref": "#/definitions/ParamName"
+        },
+        "select": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "const": "interval"
+            },
+            "encodings": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "x",
+                  "y"
+                ]
+              }
+            },
+            "clear": {
+              "enum": [
+                "dblclick",
+                false
+              ]
+            },
+            "translate": {
+              "type": "boolean"
+            },
+            "zoom": {
+              "type": "boolean"
+            }
+          }
+        },
+        "bind": {
+          "const": "scales"
+        }
+      }
+    },
+    "NearestOnlyOnPoint": {
+      "description": "select.nearest may be true only when the unit's mark is point (Vega-Lite ignores it on line/area and its compiler fails on bars with cornerRadius).",
+      "if": {
+        "not": {
+          "properties": {
+            "mark": {
+              "anyOf": [
+                {
+                  "const": "point"
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "type"
+                  ],
+                  "properties": {
+                    "type": {
+                      "const": "point"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "params": {
+            "items": {
+              "properties": {
+                "select": {
+                  "properties": {
+                    "nearest": {
+                      "const": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "SortArray": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^[^\"'\\\\\\u0000-\\u001f\\u007f-\\u009f\\u2028\\u2029]*$"
+          }
+        ]
+      }
+    },
+    "SortBasic": {
+      "oneOf": [
+        {
+          "enum": [
+            "ascending",
+            "descending",
+            null
+          ]
+        },
+        {
+          "$ref": "#/definitions/SortArray"
+        }
+      ]
+    },
+    "SortPosition": {
+      "oneOf": [
+        {
+          "enum": [
+            "ascending",
+            "descending",
+            "x",
+            "-x",
+            "y",
+            "-y",
+            "color",
+            "-color",
+            null
+          ]
+        },
+        {
+          "$ref": "#/definitions/SortArray"
+        }
+      ]
+    }
+  }
+}
