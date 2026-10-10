@@ -4,7 +4,7 @@ A draft NIP for publishing interactive charts as Nostr events, with the files th
 
 A chart is a `kind:1786` event. Its content is a declarative chart in `vega-lite-nostr`, a closed, code-free subset of [Vega-Lite](https://vega.github.io/vega-lite/). Notes embed a chart the way they quote any other event: a `nostr:nevent1…` reference plus a `q` tag. Clients check the chart against an allow-list and draw it without running author code or making network requests. An `alt` tag carries a text description for screen readers and for clients that don't support charts.
 
-**Status:** draft, not yet submitted to [nostr-protocol/nips](https://github.com/nostr-protocol/nips). Feedback is welcome in Issues.
+**Status:** draft, under review in [nostr-protocol/nips#2499](https://github.com/nostr-protocol/nips/pull/2499). Comments are welcome there or in this repo's Issues.
 
 ![The two example charts from the NIP, rendered under its sandbox and CSP rules](examples/rendered.png)
 
